@@ -1,0 +1,47 @@
+<?php
+//edb_legal.module
+function sos_check_cookie() {
+  if(!empty($_COOKIE['ReturnTo']) && stristr($_COOKIE['ReturnTo'], 'localsp.com')) {
+    return true;
+  } elseif (!empty($_GET['ReturnTo']) && stristr($_GET['ReturnTo'], 'localsp.com')) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// page content part in middle layout
+function entity_legal_template_preprocess_entity(&$variables) {
+	
+    if($variables['elements']['#entity_type'] = "entity_legal_document_version") {
+		//echo "<pre>";var_dump($variables);echo "</pre>";
+        //$variables['theme_hook_suggestions'][] = "page__sos__login";
+    }
+}
+//no header and new layout part
+//Implements hook_preprocess_page to provide template page suggestions
+function entity_legal_template_preprocess_page(&$variables) {
+	
+  if (arg(0)=="legal") {
+	$variables['sos_message'] = '<p>' . t('Users with existing credentials on localsos.com can leverage the same credentials here via Single Sign-On.') . '</p>';
+    $variables['theme_hook_suggestions'][] = 'page__sos__login'; //page--sos--login.tpl.php 
+  }  
+}
+
+
+
+/**
+ * Implements hook_form_alter().
+ */
+function entity_legal_template_form_alter(&$form, &$form_state, $form_id) {
+ 
+  if($form_id == 'entity_legal_document_acceptance_form') {
+	  
+    $form['sos_message'] = array(
+      '#markup' => '<p>' . t('Users with existing credentials on localsos.com can leverage the same credentials here via Single Sign-On.') . '</p>',
+      '#weight' => -1,
+    );
+  }
+}
+
+
