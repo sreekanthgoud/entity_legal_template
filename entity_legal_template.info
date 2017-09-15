@@ -1,0 +1,5 @@
+name = Entity Legal Template
+description = Entity Legal Custom Template Assign for SAML Login
+core = 7.x
+dependencies[] = entity
+dependencies[] = entity_legal
